@@ -52,30 +52,21 @@
                     }
                   },
                   getHalfdaysStatus: function(from, to, callback){
-                    // POC
-                    callback([
+                    // POC exemple (can be a ajax call ...)
+                    var fromDate = Date.parseExact(from, 'dd/MM/yyyy');
+                    var toDate = Date.parseExact(to, 'dd/MM/yyyy');
+                    toDate.addDays(1);
+                    var data = [];
+                    for(var d=fromDate.clone(); d < toDate; d.addDays(1)) {
+                      if(d.getDay()==0 || d.getDay()==6)
+                        data.push({ date: d.toString('dd/MM/yyyy'), classes: 'weekend', morning: true, afternoon: true });
+                    }
+                    data = data.concat(
                       { date: '01/01/2011', classes: 'dayoff', morning: true, afternoon: true },
-                      { date: '01/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '02/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '08/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '09/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '15/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '16/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '22/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '23/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '29/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '30/01/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '05/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '06/02/2011', classes: 'weekend', morning: true, afternoon: true },
                       { date: '07/02/2011', classes: 'absence', morning: true, afternoon: true },
-                      { date: '08/02/2011', classes: 'absence', morning: true },
-                      { date: '12/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '13/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '19/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '20/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '26/02/2011', classes: 'weekend', morning: true, afternoon: true },
-                      { date: '27/02/2011', classes: 'weekend', morning: true, afternoon: true }
-                    ]);
+                      { date: '08/02/2011', classes: 'absence', morning: true }
+                    );
+                    callback(data);
                   }
                 });
 		    });
