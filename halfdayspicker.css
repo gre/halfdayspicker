@@ -1,20 +1,33 @@
 
 .halfdayspicker {
-	margin: 0;
 	padding: 0;
+  width: 740px;
   -moz-user-select: none;
   -khtml-user-select: none;
   user-select: none;
-
 }
+
+.halfdayspicker a.monthUp, .halfdayspicker a.monthDown {
+  margin: 0 auto;
+}
+.halfdayspicker a.monthUp {
+  float: left;
+}
+.halfdayspicker a.monthDown {
+  float: right;
+}
+.halfdayspicker ul {
+  display: block;
+}
+
 .halfdayspicker li {
 	list-style-type: none;
 	margin: 5px 0;
 	background: #E5EDF5;
 	border-radius: 6px;
 	padding: 0px 6px 3px;
-	float: left;
-	clear: left;
+  display: inline-block;
+  width: 100%;
 }
 .halfdayspicker h3 {
 	margin: 0;
@@ -27,7 +40,6 @@
 .halfdayspicker .days {
 	display: inline-block;
 	margin: 5px;
-	width: 555px;
 }
 
 .halfdayspicker .days dl {

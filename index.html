@@ -42,10 +42,14 @@
                 picker = new HalfDaysPicker({
                   elm: $('#interval-picker'),
                   monthNumber: 3,
-                  types: { 
-                    'dayoff': 'Jours fériés',
-                    'weekend': 'Week end',
-                    'absence': 'Absence'
+                  i18n: {
+                    previousMonth: 'Mois précédent',
+                    nextMonth: 'Mois suivant',
+                    types: { 
+                      'dayoff': 'Jours fériés',
+                      'weekend': 'Week end',
+                      'absence': 'Absence'
+                    }
                   },
                   getHalfdaysStatus: function(from, to, callback){
                     // POC

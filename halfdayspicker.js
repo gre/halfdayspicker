@@ -30,15 +30,17 @@ var HalfDaysPicker = function(settings) {
         view: {}
     }
     
-    self.types = settings.types ? settings.types : {};
-    
     self.retrieveHalfdays = settings.getHalfdaysStatus ? settings.getHalfdaysStatus : function(from, to, callback) { callback([]); };
     
     self.monthNumber = settings.monthNumber ? settings.monthNumber : 2;
     
     self.format = settings.dateFormat ? settings.dateFormat : 'dd/MM/yyyy';
-    self.widget = {};
+    self.widget = null;
     
+    self.i18n = $.fn.extend({
+      previousMonth: 'Previous month',
+      nextMonth: 'Next month'
+    }, settings.i18n);
     
     /**
      * Set the date of a given model
@@ -113,9 +115,10 @@ var HalfDaysPicker = function(settings) {
             return $(this).data('time')==day.date;
           });
           var texts = day.classes.split(/\s+/);
+          var types = self.i18n.types;
           for(var t=0; t<texts.length; ++t)
-            if(self.types[ texts[t] ])
-              texts[t] = self.types[ texts[t] ];
+            if(types[ texts[t] ])
+              texts[t] = types[ texts[t] ];
           var text = texts.join(', ');
           if(day.morning) {
             $('.morning', dayContainer).addClass(day.classes)
@@ -151,7 +154,9 @@ var HalfDaysPicker = function(settings) {
         currentMonth = startMonth.clone().set({ day: 1 });
         var today = Date.today();
         
-        self.widget = $('<ul class="halfdayspicker" />');
+        if(self.widget) self.widget.remove();
+        self.widget = $('<div class="halfdayspicker" />');
+        var ul = $('<ul />');
         var month = currentMonth.clone();
         for(var m=0; m<self.monthNumber; ++m, month.addMonths(1)) {
           var monthText = month.toString("MMMM yyyy");
@@ -177,8 +182,13 @@ var HalfDaysPicker = function(settings) {
             daysContainer.append(dayNode);
           }
           monthLi.append(daysContainer);
-          self.widget.append(monthLi);
+          ul.append(monthLi);
         }
+        var upLink = $('<a href="#" class="monthUp" />').text(self.i18n.previousMonth).click(function(){ self.addMonths(-1) });
+        var downLink = $('<a href="#" class="monthDown" />').text(self.i18n.nextMonth).click(function(){ self.addMonths(1) });
+        var actions = $('<div class="actions" />').append(upLink).append(downLink);
+        self.widget.append(actions);
+        self.widget.append(ul);
         self.node.after(self.widget);
         
         self.updateHalfdays();
@@ -280,9 +290,9 @@ var HalfDaysPicker = function(settings) {
         });
     }
     
-    self.plusMonths = function(n) {
+    self.addMonths = function(n) {
       var month = self.getCurrentStartMonth();
-      month.plusMonths(n);
+      month.addMonths(n);
       self.generateWidget(month);
     }
     
