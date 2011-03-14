@@ -3,3 +3,4 @@ h2. TODO list :
 
  * Navigation de mois en mois (up , down) (toujours en gardant la même fenêtre temporelle (nombre de mois = 2 par exemple) ) : à chaque fois on interroge de nouveau l'API pour rafraichir tous les mois affichés
  * Mettre en évidence le mois actuel par une classe sur le li
+ * On doit pouvoir voir une sélection même sur des demi journées "spéciales" (weekend, jours fériés, absence, ...)

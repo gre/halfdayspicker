@@ -27,7 +27,7 @@
 .halfdayspicker .days {
 	display: inline-block;
 	margin: 5px;
-	width: 547px;
+	width: 555px;
 }
 
 .halfdayspicker .days dl {
@@ -120,7 +120,7 @@
 	border-radius: 0 0 3px 3px;
 }
 
-.halfdayspicker .days .monday {
+.halfdayspicker .days .dayOfWeek-1 {
 	margin-left: 5px;
 }
 

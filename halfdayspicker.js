@@ -158,11 +158,13 @@ var HalfDaysPicker = function(settings) {
           for(var day = month.set({ day: 1 }).clone(); day.getMonth() == monthNum; day.addDays(1)) {
             var dayNode = $('<div class="day" />');
             if(today.getYear() == day.getYear()) {
-              if(today.getWeekOfYear() == day.getWeekOfYear())
+              // In France, we begin with Monday
+              if(today.getWeekOfYear() == day.getWeekOfYear() && day.getDay()>0 || today.getWeekOfYear()+1 == day.getWeekOfYear() && day.getDay()==0)
                 dayNode.addClass('currentWeek');
               if(today.getDayOfYear() == day.getDayOfYear())
                 dayNode.addClass('currentDay');
             }
+            dayNode.addClass('dayOfWeek-'+day.getDay());
             dayNode.data('time', day.toString(self.format));
             dayNode.append('<span class="dayNum">'+day.toString('dd')+'</span>');
             dayNode.append('<dl><dt class="morning"></dt><dd class="morning">M</dd></dl>');
