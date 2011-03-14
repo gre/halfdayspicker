@@ -51,7 +51,7 @@ var HalfDaysPicker = function(settings) {
         model.morning.removeAttr('checked');
         model.afternoon.removeAttr('checked');
         if(date) {
-          model.input.val(date.parent().data('time')).change();
+          model.input.val(date.parents('.day').data('time')).change();
           if (date.is('.morning')) {
               model.morning.attr('checked', 'checked').change();
           } else {
