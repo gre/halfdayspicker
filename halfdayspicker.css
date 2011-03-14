@@ -7,7 +7,7 @@
   user-select: none;
 
 }
-.halfdayspicker li{
+.halfdayspicker li {
 	list-style-type: none;
 	margin: 5px 0;
 	background: #E5EDF5;
@@ -101,7 +101,7 @@
 	border-radius: 3px 3px 0 0;
 	cursor: default;
 	text-align: center;
-	color: rgba(0,0,0,0);
+	color: rgba(255,255,255,0.1);
 	font-size: 10px;
 }
 .halfdayspicker .days dd:hover {
