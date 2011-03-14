@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8"0>
+		<title>Poc</title>
+    <style>
+    body {
+      font: 12px Arial, sans-serif;
+    }
+    </style>
+		<link rel="stylesheet" href="halfdayspicker.css" type="text/css" media="screen" charset="utf-8"0 />
+	</head>
+	<body>
+		<h1>Half Days Period Picker</h1>
+		
+    <h2>Choisissez une période</h2>
+		
+    <em>This field will be hidden by the component... just still visible for debugging...</em>
+    <div id="interval-picker">
+        <div class="start" style="display: inline-block;">
+            <input type="text" name="start" id="start" class="start-date" />
+            <input type="checkbox" name="start-morning" id="start-morning" class="start-morning" />
+            <label for="start-morning">Matin</label>
+            <input type="checkbox" name="start-afternoon" id="start-afternoon" class="start-afternoon" />
+            <label for="start-afternoon">Après-midi</label>
+        </div>
+        <div class="end" style="display: inline-block;">
+          <input type="text" name="stop" id="stop" class="stop-date" />
+          <input type="checkbox" name="stop-morning" id="stop-morning" class="stop-morning" />
+          <label for="stop-morning">Matin</label>
+          <input type="checkbox" name="stop-afternoon" id="stop-afternoon" class="stop-afternoon" />
+          <label for="stop-afternoon">Après-midi</label>
+        </div>
+    </div>
+    
+    <script src="lib/jquery-1.5.1.js"></script> 
+		<script src="lib/date.js"></script>
+		<script src="lib/date-fr-FR.js"></script>
+		<script src="halfdayspicker.js"></script>
+		<script type="text/javascript">
+		    $(function() {
+                // Creates an interval picker model
+                var picker = new HalfDaysPicker({
+                  elm: $('#interval-picker'),
+                  getHalfdaysStatus: function(from, to, callback){
+                    // POC
+                    callback([
+                      { date: '01/01/2011', classes: 'dayoff', morning: true, afternoon: true },
+                      { date: '01/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '02/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '08/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '09/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '15/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '16/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '22/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '23/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '29/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '30/01/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '05/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '06/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '07/02/2011', classes: 'absence', morning: true, afternoon: true },
+                      { date: '12/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '13/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '19/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '20/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '26/02/2011', classes: 'weekend', morning: true, afternoon: true },
+                      { date: '27/02/2011', classes: 'weekend', morning: true, afternoon: true }
+                    ]);
+                  }
+                });
+		    });
+		</script>
+	</body>
+</html>

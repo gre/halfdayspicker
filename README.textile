@@ -1,0 +1,15 @@
+
+h2. TODO list :
+
+ * Navigation de mois en mois (up , down) (toujours en gardant la même fenêtre temporelle (nombre de mois = 2 par exemple) ) : à chaque fois on interroge de nouveau l'API pour rafraichir tous les mois affichés
+ * Mettre en évidence le jour actuel et la semaine actuelle par des classes sur dl (currentDay, currentWeek)
+ * Mettre en évidence le mois actuel par une classe sur le li
+ * Ajouter au bind du change sur les input des tests de synchronisation au composant
+
+h3. Proposition d'amélioration ergonomique :
+
+Si on passe pas la souris, on comprends mal la signification des carrés.
+
+ * afficher en petit les numéro des jours au dessus (le numéro du jour actuel est d'une autre couleur par exemple).
+  Et supprimer dans la popup l'info du jour (garder juste les popup pour les jours "spéciaux") car c'est redondant avec le reste.
+ * afficher les M et A même sans hover (mais moins fortement, très légèrement) / ou bien les afficher à droite.

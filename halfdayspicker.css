@@ -1,0 +1,156 @@
+
+.halfdayspicker {
+	margin: 0;
+	padding: 0;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+
+}
+.halfdayspicker li{
+	list-style-type: none;
+	margin: 5px 0;
+	background: #d9e5f3;
+	-webkit-border-radius: 6px;
+	padding: 5px 6px 3px;
+	float: left;
+	clear: left;
+}
+.halfdayspicker h3 {
+	margin: 0;
+	padding: 5px 5px 0;
+	display: inline-block;
+	width: 150px;
+	vertical-align: top;
+}
+.halfdayspicker .days {
+	display: inline-block;
+	margin: 5px;
+	width: 547px;
+}
+.halfdayspicker .days dl {
+	margin: 0;
+	padding: 1px;
+	display: inline-block;
+	width: 15px;
+	position: relative;
+	float: left;
+}
+.halfdayspicker .days dt {
+	display: none;
+	position: absolute;
+	-webkit-border-radius: 4px;
+	top: -28px;
+	left: -67px;
+	width: 150px;
+	text-align: center;
+	background: #333;
+	color: #fff;
+	padding: 2px;
+}
+.halfdayspicker .days dt:after {
+	content: " ";
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 1px;
+	height: 0;
+	margin-left: -9px;
+
+    border-top: 0.8em solid #333;
+    border-left: 0.8em solid transparent;
+    border-right: 0.8em solid transparent;
+    border-bottom: none;
+
+}
+.halfdayspicker .days dl:hover dt {
+	display: block;
+	-webkit-animation: show 400ms alternate;
+}
+
+.halfdayspicker .days dd {
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	line-height: 15px;
+	background: #0066b9;
+	-webkit-border-radius: 3px 3px 0 0;
+	cursor: default;
+	text-align: center;
+	color: rgba(0,0,0,0);
+	font-size: 10px;
+}
+.halfdayspicker .days dd:hover {
+	color: #fff;
+}
+.halfdayspicker .days dd.selected {
+    background-color: green;
+    cursor: move;
+}
+.halfdayspicker .days dd.included {
+    background-color: #003300;
+}
+
+.halfdayspicker .days dd:last-child {
+	border-top: 2px solid #d9e5f3;
+	-webkit-border-radius: 0 0 3px 3px;
+}
+
+.halfdayspicker .days .monday {
+	margin-left: 5px;
+}
+
+.halfdayspicker .days dd:hover {
+	background: #f65700;
+}
+.halfdayspicker .days .weekend dd {
+	background: #abc5e3;
+}
+.halfdayspicker .days .weekend dt:before {
+	content: "week-end";
+	float: left;
+	display: inline-block;
+	color: #aaa;
+	padding: 0 3px;
+}
+
+.halfdayspicker .days .dayoff dd {
+	background: #899FB8;
+}
+.halfdayspicker .days .dayoff dt:before {
+	content: "férié";
+	float: left;
+	display: inline-block;
+	color: #aaa;
+	padding: 0 3px;
+}
+
+.halfdayspicker .days .absence dd {
+	background: #6D34AC;
+}
+.halfdayspicker .days .absence dt:before {
+	content: "absence";
+	float: left;
+	display: inline-block;
+	color: #aaa;
+	padding: 0 3px;
+}
+
+@-webkit-keyframes show {
+	0% {
+		display: block;
+		opacity: 0;
+	}
+	15% {
+		opacity: 0;
+		top: -50px;
+	}
+	100% {
+		top: -28px;
+		opacity: 1;
+	}
+}
+
