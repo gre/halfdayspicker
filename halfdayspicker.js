@@ -48,14 +48,14 @@ var HalfDaysPicker = function(settings) {
     var setDate = function(model, date) {
         model.view = date;
         // Clear checkboxes
-        model.morning.removeAttr('checked');
-        model.afternoon.removeAttr('checked');
         if(date) {
           model.input.val(date.parents('.day').data('time')).change();
-          if (date.is('.morning')) {
-              model.morning.attr('checked', 'checked').change();
+          if(date.is('.morning')) {
+            model.morning.attr('checked', 'checked').change();
+            model.afternoon.removeAttr('checked').change();
           } else {
-              model.afternoon.attr('checked', 'checked').change();
+            model.afternoon.attr('checked', 'checked').change();
+            model.morning.removeAttr('checked').change();
           }
         }
         else {
@@ -142,12 +142,17 @@ var HalfDaysPicker = function(settings) {
       self.stop.view = dayTo.find('dd').filter(self.stop.morning.is(':checked') ? '.morning' : '.afternoon');
       self.render();
     }
-
+    
+    var currentMonth = Date.today();
+    self.getCurrentStartMonth = function() {
+      return currentMonth.clone();
+    }
     self.generateWidget = function(startMonth) {
+        currentMonth = startMonth.clone().set({ day: 1 });
         var today = Date.today();
         
         self.widget = $('<ul class="halfdayspicker" />');
-        var month = startMonth.clone();
+        var month = currentMonth.clone();
         for(var m=0; m<self.monthNumber; ++m, month.addMonths(1)) {
           var monthText = month.toString("MMMM yyyy");
           var monthLi = $('<li />');
@@ -180,10 +185,10 @@ var HalfDaysPicker = function(settings) {
         self.updateWithInputs();
     }
     
+    /// Bind Events
+    
     self.bindAll = function() {
-        // Bind events on their handlers
-        // Handle clicks on our widget
-        
+      
         var mousePressed = false;
         var selectDragging = false;
         var selectIsStart = false;
@@ -267,7 +272,6 @@ var HalfDaysPicker = function(settings) {
           }
         });
         
-        // Track input changes
         self.start.input.change(function() {
           self.render();
         });
@@ -276,7 +280,29 @@ var HalfDaysPicker = function(settings) {
         });
     }
     
-    self.generateWidget(Date.today().set({ month: 0, year: 2011 }));
+    self.plusMonths = function(n) {
+      var month = self.getCurrentStartMonth();
+      month.plusMonths(n);
+      self.generateWidget(month);
+    }
+    
+    /**
+     * get a month centered on today or on startDate input if available
+     */
+    var guessBestStartMonth = function() {
+      var refDate = null;
+      var startVal = self.start.input.val();
+      if(startVal) refDate = Date.parseExact (startVal, self.format);
+      if(!refDate) refDate = Date.today();
+      refDate.addDays(-15*self.monthNumber);
+      if(refDate.getDate() > 15) refDate.addMonths(1);
+      refDate.set({day: 1});
+      return refDate;
+    }
+    
+    /// Init
+    
+    self.generateWidget(guessBestStartMonth());
     self.bindAll();
 }
 
