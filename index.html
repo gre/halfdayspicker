@@ -10,11 +10,11 @@
 		<link rel="stylesheet" href="halfdayspicker.css" type="text/css" media="screen" charset="utf-8"0 />
 	</head>
 	<body>
-		<h1>Half Days Period Picker</h1>
+		<h1>Half Day Period Picker</h1>
 		
     <h2>Choisissez une période</h2>
 		
-    <em>This field will be hidden by the component... just still visible for debugging...</em>
+    <em>These fields will be hidden by the component... just still visible for debugging...</em>
     <div id="interval-picker">
         <div class="start" style="display: inline-block;">
             <input type="text" name="start" id="start" class="start-date" />
@@ -41,6 +41,12 @@
                 // Creates an interval picker model
                 var picker = new HalfDaysPicker({
                   elm: $('#interval-picker'),
+                  monthNumber: 3,
+                  types: { 
+                    'dayoff': 'Jours fériés',
+                    'weekend': 'Week end',
+                    'absence': 'Absence'
+                  },
                   getHalfdaysStatus: function(from, to, callback){
                     // POC
                     callback([
@@ -58,6 +64,7 @@
                       { date: '05/02/2011', classes: 'weekend', morning: true, afternoon: true },
                       { date: '06/02/2011', classes: 'weekend', morning: true, afternoon: true },
                       { date: '07/02/2011', classes: 'absence', morning: true, afternoon: true },
+                      { date: '08/02/2011', classes: 'absence', morning: true },
                       { date: '12/02/2011', classes: 'weekend', morning: true, afternoon: true },
                       { date: '13/02/2011', classes: 'weekend', morning: true, afternoon: true },
                       { date: '19/02/2011', classes: 'weekend', morning: true, afternoon: true },

@@ -30,9 +30,11 @@ var HalfDaysPicker = function(settings) {
         view: {}
     }
     
+    self.types = settings.types ? settings.types : {};
+    
     self.retrieveHalfdays = settings.getHalfdaysStatus ? settings.getHalfdaysStatus : function(from, to, callback) { callback([]); };
     
-    self.monthNumber = 2;
+    self.monthNumber = settings.monthNumber ? settings.monthNumber : 2;
     
     self.format = settings.dateFormat ? settings.dateFormat : 'dd/MM/yyyy';
     self.widget = {};
@@ -105,7 +107,7 @@ var HalfDaysPicker = function(settings) {
     };
     
     self.updateHalfdays = function() {
-      var allDays = self.widget.find('dl');
+      var allDays = self.widget.find('.day');
       var from = allDays.first().data('time');
       var to = allDays.last().data('time');
       self.retrieveHalfdays(from, to, function(days){
@@ -114,11 +116,18 @@ var HalfDaysPicker = function(settings) {
           var dayContainer = allDays.filter(function(){
             return $(this).data('time')==day.date;
           });
+          var texts = day.classes.split(/\s+/);
+          for(var t=0; t<texts.length; ++t)
+            if(self.types[ texts[t] ])
+              texts[t] = self.types[ texts[t] ];
+          var text = texts.join(', ');
           if(day.morning) {
-            dayContainer.addClass(day.classes);
+            $('.morning', dayContainer).addClass(day.classes)
+            .filter('dt').text(text);
           }
           if(day.afternoon) {
-            dayContainer.addClass(day.classes);
+            $('.afternoon', dayContainer).addClass(day.classes)
+            .filter('dt').text(text);
           }
         }
         self.widget.show();
@@ -126,7 +135,7 @@ var HalfDaysPicker = function(settings) {
     }
     
     self.updateWithInputs = function() {
-      var allDays = self.widget.find('dl');
+      var allDays = self.widget.find('.day');
       self.start.view = allDays.filter(function(){
         return $(this).data('time')==self.start.input.val();
       });
@@ -139,6 +148,7 @@ var HalfDaysPicker = function(settings) {
     // TODO Change this method to generate the widget (instead of using the one defined in the .html file)
     self.generateWidget = function(startMonth) {
         var month = startMonth.clone();
+        var today = Date.today();
         
         self.widget = $('<ul class="halfdayspicker" />');
         var month = startMonth.clone();
@@ -150,10 +160,18 @@ var HalfDaysPicker = function(settings) {
           
           var monthNum = month.getMonth();
           for(var day = month.set({ day: 1 }).clone(); day.getMonth() == monthNum; day.addDays(1)) {
-            var dayLi = $('<dl />');
-            dayLi.data('time', day.toString(self.format));
-            dayLi.append('<dt>'+day.toString("dd MMMM yyyy")+'</dt><dd class="morning">M</dd><dd class="afternoon">A</dd>');
-            daysContainer.append(dayLi);
+            var dayNode = $('<div class="day" />');
+            if(today.getYear() == day.getYear()) {
+              if(today.getWeekOfYear() == day.getWeekOfYear())
+                dayNode.addClass('currentWeek');
+              if(today.getDayOfYear() == day.getDayOfYear())
+                dayNode.addClass('currentDay');
+            }
+            dayNode.data('time', day.toString(self.format));
+            dayNode.append('<span class="dayNum">'+day.toString('dd')+'</span>');
+            dayNode.append('<dl><dt class="morning"></dt><dd class="morning">M</dd></dl>');
+            dayNode.append('<dl><dt class="afternoon"></dt><dd class="afternoon">A</dd></dl>');
+            daysContainer.append(dayNode);
           }
           monthLi.append(daysContainer);
           self.widget.append(monthLi);
@@ -201,7 +219,6 @@ var HalfDaysPicker = function(settings) {
         }
         
         $(window).bind('mouseup', function(e){
-          mousePressed = false;
           var target = $(e.target);
           if(target.is('dd') && target.parents('.halfdayspicker')[0] == self.widget[0]) {
             if(selectDragging && self.start.view && self.stop.view) {
@@ -216,8 +233,9 @@ var HalfDaysPicker = function(settings) {
               }
             }
             self.render();
-            selectDragging = false;
           }
+          mousePressed = false;
+          selectDragging = false;
         });
         $(window).bind('mousedown', function(e){
           mousePressed = true;
