@@ -95,12 +95,10 @@ var HalfDaysPicker = function(settings) {
             $(endDate).addClass('selected');
         }
         if (startDate && endDate) { // Show the interval
-            (function(startDate, endDate) {
-                var dds = self.widget.find('dd');
-                var startIndex = dds.index(startDate);
-                var endIndex = dds.index(endDate);
-                dds.filter(':lt('+endIndex+')').filter(':gt('+startIndex+')').addClass('included');
-            })(startDate, endDate);
+            var dds = self.widget.find('dd');
+            var startIndex = dds.index(startDate);
+            var endIndex = dds.index(endDate);
+            dds.filter(':lt('+endIndex+')').filter(':gt('+startIndex+')').addClass('included');
         }
     };
     
@@ -134,12 +132,14 @@ var HalfDaysPicker = function(settings) {
     
     self.updateWithInputs = function() {
       var allDays = self.widget.find('.day');
-      self.start.view = allDays.filter(function(){
+      var dayFrom = allDays.filter(function(){
         return $(this).data('time')==self.start.input.val();
       });
-      self.stop.view = allDays.filter(function(){
+      var dayTo = allDays.filter(function(){
         return $(this).data('time')==self.stop.input.val();
       });
+      self.start.view = dayFrom.find('dd').filter(self.start.morning.is(':checked') ? '.morning' : '.afternoon');
+      self.stop.view = dayTo.find('dd').filter(self.stop.morning.is(':checked') ? '.morning' : '.afternoon');
       self.render();
     }
 
@@ -230,7 +230,6 @@ var HalfDaysPicker = function(settings) {
                 setDates(targetDown, target, true);
               }
             }
-            self.render();
           }
           mousePressed = false;
           selectDragging = false;
@@ -248,7 +247,6 @@ var HalfDaysPicker = function(settings) {
               selectDragging = false;
               if(self.stop.view) {
                 setDates(null, null, false);
-                self.render();
               }
             }
             
@@ -257,12 +255,13 @@ var HalfDaysPicker = function(settings) {
         $(window).bind('mousemove', function(e){
           var target = $(e.target);
           if(target.is('dd') && target.parents('.halfdayspicker')[0] == self.widget[0]) {
-            if(selectDragging && self.start.view && self.stop.view) {
-              onSelectDrag(target, false);
-              self.render();
-            }
-            else if(mousePressed) {
-              setDates(targetDown, target, false);
+            if(mousePressed) {
+              if(selectDragging && self.start.view && self.stop.view) {
+                onSelectDrag(target, false);
+              }
+              else if(mousePressed) {
+                setDates(targetDown, target, false);
+              }
               self.render();
             }
           }
@@ -279,6 +278,5 @@ var HalfDaysPicker = function(settings) {
     
     self.generateWidget(Date.today().set({ month: 0, year: 2011 }));
     self.bindAll();
-    self.updateWithInputs();
 }
 

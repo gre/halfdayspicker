@@ -107,12 +107,12 @@
 .halfdayspicker .days dd:hover {
 	color: #fff;
 }
-.halfdayspicker .days dd.selected {
-    background-color: green;
-    cursor: move;
-}
 .halfdayspicker .days dd.included {
-    background-color: #003300;
+    background-color: #0a0;
+}
+.halfdayspicker .days dd.selected {
+    background-color: #060;
+    cursor: move;
 }
 
 .halfdayspicker .days dl:last-child dd {
@@ -138,6 +138,24 @@
 
 .halfdayspicker .days dd.absence {
 	background: #6D34AC;
+}
+
+/* non open days colors */
+.halfdayspicker .days dd.included.weekend, 
+.halfdayspicker .days dd.included.dayoff {
+  background-color: #99a;
+}
+.halfdayspicker .days dd.selected.weekend, 
+.halfdayspicker .days dd.selected.dayoff {
+  background-color: #667;
+}
+
+/* warning colors */
+.halfdayspicker .days dd.included.absence {
+  background-color: #c00;
+}
+.halfdayspicker .days dd.selected.absence {
+  background-color: #900;
 }
 
 @-webkit-keyframes show {
