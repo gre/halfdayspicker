@@ -20,7 +20,7 @@ var HalfDaysPicker = function(settings) {
         input: self.node.find('.start-date'), // The date input field
         morning: self.node.find('.start-morning'), // The morning checkbox
         afternoon: self.node.find('.start-afternoon'), // The afternoon checkbox
-        view: {} // A future reference to the dd element corresponding to the start time, HACK by doing this I won’t update the widget according to the input value, I will reuse my reference to the view
+        view: {} // A future reference to the dd element corresponding to the start time
     }
     self.stop = {
         elm: self.node.find('.stop'),
@@ -69,7 +69,6 @@ var HalfDaysPicker = function(settings) {
      */
     self.setStartDate = function(date) {
         setDate(self.start, date);
-        // TODO give the focus to the end date field if empty, otherwise hide the widget (unless it’s a bad idea?)
     };
     
     /**
@@ -78,7 +77,6 @@ var HalfDaysPicker = function(settings) {
      */
     self.setStopDate = function(date) {
         setDate(self.stop, date);
-        // TODO hide the widget?
     };
 
     self.render = function() {
@@ -145,9 +143,7 @@ var HalfDaysPicker = function(settings) {
       self.render();
     }
 
-    // TODO Change this method to generate the widget (instead of using the one defined in the .html file)
     self.generateWidget = function(startMonth) {
-        var month = startMonth.clone();
         var today = Date.today();
         
         self.widget = $('<ul class="halfdayspicker" />');
@@ -184,7 +180,7 @@ var HalfDaysPicker = function(settings) {
     
     self.bindAll = function() {
         // Bind events on their handlers
-        // Handle clicks on our widget (FIXME this binding should be set just after the user gives the focus to an input field — it would avoid to track a internal state)
+        // Handle clicks on our widget
         
         var mousePressed = false;
         var selectDragging = false;
@@ -270,7 +266,7 @@ var HalfDaysPicker = function(settings) {
           }
         });
         
-        // Track input changes (FIXME should be set only when the widget is shown)
+        // Track input changes
         self.start.input.change(function() {
           self.render();
         });
