@@ -184,7 +184,7 @@ var HalfDaysPicker = function(settings) {
     }
     
     
-    var onDateChange = function(){
+    var onPeriodChange = function(){
       self.node.trigger('halfdayspicker-change');
     }
     self.node.bind('halfdayspicker-change', self.onchange);
@@ -228,7 +228,7 @@ var HalfDaysPicker = function(settings) {
       if(updateInputs) {
         setDate(self.start, a);
         setDate(self.stop, b);
-        onDateChange();
+        onPeriodChange();
       }
       else {
         self.start.view = a;
@@ -315,5 +315,6 @@ var HalfDaysPicker = function(settings) {
     
     self.generateWidget(guessBestStartMonth());
     self.bindAll();
+    onPeriodChange();
 }
 
