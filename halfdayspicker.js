@@ -20,14 +20,14 @@ var HalfDaysPicker = function(settings) {
         input: self.node.find('.start-date'), // The date input field
         morning: self.node.find('.start-morning'), // The morning checkbox
         afternoon: self.node.find('.start-afternoon'), // The afternoon checkbox
-        view: {} // A future reference to the dd element corresponding to the start time
+        view: null // A future reference to the dd element corresponding to the start time
     }
     self.stop = {
         elm: self.node.find('.stop'),
         input: self.node.find('.stop-date'),
         morning: self.node.find('.stop-morning'),
         afternoon: self.node.find('.stop-afternoon'),
-        view: {}
+        view: null
     }
     
     self.retrieveHalfdays = settings.getHalfdaysStatus ? settings.getHalfdaysStatus : function(from, to, callback) { callback([]); };
@@ -106,6 +106,8 @@ var HalfDaysPicker = function(settings) {
       });
       self.start.view = dayFrom.find('dd').filter(self.start.morning.is(':checked') ? '.morning' : '.afternoon');
       self.stop.view = dayTo.find('dd').filter(!self.stop.afternoon.is(':checked') ? '.morning' : '.afternoon');
+      if(self.start.view.length==0) self.start.view = null;
+      if(self.stop.view.length==0) self.stop.view = null;
       self.render();
     }
     
