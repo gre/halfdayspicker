@@ -164,17 +164,22 @@ var HalfDaysPicker = function(settings) {
       self.generateWidget(month);
     }
     
+    
+    var guessBestCenter = function() {
+      var d = null;
+      var startVal = self.start.input.val();
+      if(startVal) d = Date.parseExact (startVal, self.format);
+      if(!d) d = Date.today();
+      return d;
+    }
+    
     /**
      * get a month centered on today or on startDate input if available
      */
     var guessBestStartMonth = function() {
-      var refDate = null;
-      var startVal = self.start.input.val();
-      if(startVal) refDate = Date.parseExact (startVal, self.format);
-      if(!refDate) refDate = Date.today();
+      var refDate = guessBestCenter();
       refDate.addDays(-15*self.monthNumber);
       if(refDate.getDate() > 15) refDate.addMonths(1);
-      refDate.set({day: 1});
       return refDate;
     }
     
@@ -296,11 +301,13 @@ var HalfDaysPicker = function(settings) {
         
         $('input', self.node).change(function() {
           self.updateWithInputs();
-          // Update range if best start month changed
-          var bestDate = guessBestStartMonth();
-          var currentMonth = self.getCurrentStartMonth();
-          if(bestDate.getMonth()!=currentMonth.getMonth() || bestDate.getFullYear()!=currentMonth.getFullYear())
-            self.generateWidget(bestDate);
+          // Update range if range visible
+          var bestDate = guessBestCenter();
+          var startMonth = self.getCurrentStartMonth();
+          var endMonth = self.getCurrentStartMonth();
+          endMonth.addMonths(self.monthNumber);
+          if(!bestDate.between(startMonth, endMonth))
+            self.generateWidget(guessBestStartMonth());
         });
     }
     
