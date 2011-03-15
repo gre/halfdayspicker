@@ -45,7 +45,6 @@ var HalfDaysPicker = function(settings) {
     }, settings.i18n);
     
     self.render = function() {
-      console.log(this);
         var startDate = self.start.view;
         var endDate = self.stop.view;
         
