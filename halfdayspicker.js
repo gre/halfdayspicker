@@ -37,10 +37,17 @@ var HalfDaysPicker = function(settings) {
     self.format = settings.dateFormat ? settings.dateFormat : 'dd/MM/yyyy';
     self.widget = null;
     
+    self.onchange = settings.onchange ? settings.onchange : function(){};
+    
     self.i18n = $.fn.extend({
       previousMonth: 'Previous month',
       nextMonth: 'Next month'
     }, settings.i18n);
+    
+    var onDateChange = function(){
+      self.node.trigger('halfdayspicker-change');
+    }
+    self.node.bind('halfdayspicker-change', self.onchange);
     
     /**
      * Set the date of a given model
@@ -51,18 +58,19 @@ var HalfDaysPicker = function(settings) {
         model.view = date;
         // Clear checkboxes
         if(date) {
-          model.input.val(date.parents('.day').data('time')).change();
+          model.input.val(date.parents('.day').data('time'));
           if(date.is('.morning')) {
-            model.morning.attr('checked', 'checked').change();
-            model.afternoon.removeAttr('checked').change();
+            model.morning.attr('checked', 'checked');
+            model.afternoon.removeAttr('checked');
           } else {
-            model.afternoon.attr('checked', 'checked').change();
-            model.morning.removeAttr('checked').change();
+            model.afternoon.attr('checked', 'checked');
+            model.morning.removeAttr('checked');
           }
         }
         else {
-          model.input.val("").change();
+          model.input.val("");
         }
+        onDateChange();
     };
 
     /**
@@ -142,7 +150,7 @@ var HalfDaysPicker = function(settings) {
         return $(this).data('time')==self.stop.input.val();
       });
       self.start.view = dayFrom.find('dd').filter(self.start.morning.is(':checked') ? '.morning' : '.afternoon');
-      self.stop.view = dayTo.find('dd').filter(self.stop.morning.is(':checked') ? '.morning' : '.afternoon');
+      self.stop.view = dayTo.find('dd').filter(!self.stop.afternoon.is(':checked') ? '.morning' : '.afternoon');
       self.render();
     }
     
@@ -193,6 +201,26 @@ var HalfDaysPicker = function(settings) {
         
         self.updateHalfdays();
         self.updateWithInputs();
+    }
+    
+    self.addMonths = function(n) {
+      var month = self.getCurrentStartMonth();
+      month.addMonths(n);
+      self.generateWidget(month);
+    }
+    
+    /**
+     * get a month centered on today or on startDate input if available
+     */
+    var guessBestStartMonth = function() {
+      var refDate = null;
+      var startVal = self.start.input.val();
+      if(startVal) refDate = Date.parseExact (startVal, self.format);
+      if(!refDate) refDate = Date.today();
+      refDate.addDays(-15*self.monthNumber);
+      if(refDate.getDate() > 15) refDate.addMonths(1);
+      refDate.set({day: 1});
+      return refDate;
     }
     
     /// Bind Events
@@ -282,32 +310,14 @@ var HalfDaysPicker = function(settings) {
           }
         });
         
-        self.start.input.change(function() {
-          self.render();
+        $('input', self.node).change(function() {
+          self.updateWithInputs();
+          // Update range if best start month changed
+          var bestDate = guessBestStartMonth();
+          var currentMonth = self.getCurrentStartMonth();
+          if(bestDate.getMonth()!=currentMonth.getMonth() || bestDate.getFullYear()!=currentMonth.getFullYear())
+            self.generateWidget(bestDate);
         });
-        self.stop.input.change(function() {
-          self.render();
-        });
-    }
-    
-    self.addMonths = function(n) {
-      var month = self.getCurrentStartMonth();
-      month.addMonths(n);
-      self.generateWidget(month);
-    }
-    
-    /**
-     * get a month centered on today or on startDate input if available
-     */
-    var guessBestStartMonth = function() {
-      var refDate = null;
-      var startVal = self.start.input.val();
-      if(startVal) refDate = Date.parseExact (startVal, self.format);
-      if(!refDate) refDate = Date.today();
-      refDate.addDays(-15*self.monthNumber);
-      if(refDate.getDate() > 15) refDate.addMonths(1);
-      refDate.set({day: 1});
-      return refDate;
     }
     
     /// Init

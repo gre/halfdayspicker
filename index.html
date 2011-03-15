@@ -14,7 +14,6 @@
 		
     <h2>Choisissez une période</h2>
 		
-    <em>These fields will be hidden by the component... just still visible for debugging...</em>
     <div id="interval-picker">
         <div class="start" style="display: inline-block;">
             <input type="text" name="start" id="start" class="start-date" />
@@ -61,11 +60,6 @@
                       if(d.getDay()==0 || d.getDay()==6)
                         data.push({ date: d.toString('dd/MM/yyyy'), classes: 'weekend', morning: true, afternoon: true });
                     }
-                    data = data.concat(
-                      { date: '01/01/2011', classes: 'dayoff', morning: true, afternoon: true },
-                      { date: '07/02/2011', classes: 'absence', morning: true, afternoon: true },
-                      { date: '08/02/2011', classes: 'absence', morning: true }
-                    );
                     callback(data);
                   }
                 });
