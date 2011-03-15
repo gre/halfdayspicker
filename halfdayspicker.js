@@ -44,52 +44,8 @@ var HalfDaysPicker = function(settings) {
       nextMonth: 'Next month'
     }, settings.i18n);
     
-    var onDateChange = function(){
-      self.node.trigger('halfdayspicker-change');
-    }
-    self.node.bind('halfdayspicker-change', self.onchange);
-    
-    /**
-     * Set the date of a given model
-     * @param model An object like self.start or self.stop
-     * @param date The jQuery element of the dd containing the date
-     */
-    var setDate = function(model, date) {
-        model.view = date;
-        // Clear checkboxes
-        if(date) {
-          model.input.val(date.parents('.day').data('time'));
-          if(date.is('.morning')) {
-            model.morning.attr('checked', 'checked');
-            model.afternoon.removeAttr('checked');
-          } else {
-            model.afternoon.attr('checked', 'checked');
-            model.morning.removeAttr('checked');
-          }
-        }
-        else {
-          model.input.val("");
-        }
-        onDateChange();
-    };
-
-    /**
-     * Select a start date for the interval and gives the focus to the end date field if empty
-     * @param date A jQuery element containing the clicked date
-     */
-    self.setStartDate = function(date) {
-        setDate(self.start, date);
-    };
-    
-    /**
-     * Select an end date for the interval and hide the widget
-     * @param date A jQuery element containing the clicked date
-     */
-    self.setStopDate = function(date) {
-        setDate(self.stop, date);
-    };
-
     self.render = function() {
+      console.log(this);
         var startDate = self.start.view;
         var endDate = self.stop.view;
         
@@ -223,6 +179,60 @@ var HalfDaysPicker = function(settings) {
       return refDate;
     }
     
+    
+    var onDateChange = function(){
+      self.node.trigger('halfdayspicker-change');
+    }
+    self.node.bind('halfdayspicker-change', self.onchange);
+    
+    /**
+     * Set the date of a given model
+     * @param model An object like self.start or self.stop
+     * @param date The jQuery element of the dd containing the date
+     */
+    var setDate = function(model, date) {
+        model.view = date;
+        // Clear checkboxes
+        if(date) {
+          model.input.val(date.parents('.day').data('time'));
+          if(date.is('.morning')) {
+            model.morning.attr('checked', 'checked');
+            model.afternoon.removeAttr('checked');
+          } else {
+            model.afternoon.attr('checked', 'checked');
+            model.morning.removeAttr('checked');
+          }
+        }
+        else {
+          model.input.val("");
+        }
+    };
+    
+    var setDates = function(a, b, updateInputs) {
+      var dds = self.widget.find('dd');
+      if(a==null) {
+        a = b;
+        b = null;
+      }
+      if(a!=null && b!=null) {
+        if(dds.index(a) > dds.index(b)) {
+          var tmp = b;
+          b = a;
+          a = tmp;
+        }
+      }
+      if(updateInputs) {
+        setDate(self.start, a);
+        setDate(self.stop, b);
+        onDateChange();
+      }
+      else {
+        self.start.view = a;
+        self.stop.view = b;
+      }
+      self.render();
+    }
+    
     /// Bind Events
     
     self.bindAll = function() {
@@ -231,29 +241,6 @@ var HalfDaysPicker = function(settings) {
         var selectDragging = false;
         var selectIsStart = false;
         var targetDown = null;
-        
-        var setDates = function(a, b, updateInputs) {
-          var dds = self.widget.find('dd');
-          if(a==null) {
-            a = b;
-            b = null;
-          }
-          if(a!=null && b!=null) {
-            if(dds.index(a) > dds.index(b)) {
-              var tmp = b;
-              b = a;
-              a = tmp;
-            }
-          }
-          if(updateInputs) {
-            self.setStartDate(a);
-            self.setStopDate(b);
-          }
-          else {
-            self.start.view = a;
-            self.stop.view = b;
-          }
-        }
         
         var onSelectDrag = function(target, updateInputs) {
           setDates(target, selectIsStart ? self.stop.view : self.start.view, updateInputs);
@@ -292,7 +279,6 @@ var HalfDaysPicker = function(settings) {
                 setDates(null, null, false);
               }
             }
-            
           }
         });
         $(window).bind('mousemove', function(e){
@@ -305,7 +291,6 @@ var HalfDaysPicker = function(settings) {
               else if(mousePressed) {
                 setDates(targetDown, target, false);
               }
-              self.render();
             }
           }
         });
