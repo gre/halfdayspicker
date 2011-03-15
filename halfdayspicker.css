@@ -99,7 +99,8 @@
 
 .halfdayspicker .days dl:hover dt.weekend,
 .halfdayspicker .days dl:hover dt.dayoff,
-.halfdayspicker .days dl:hover dt.absence {
+.halfdayspicker .days dl:hover dt.absence,
+.halfdayspicker .days dl:hover dt.absence_pending {
 	display: block;
 	-webkit-animation: show 400ms alternate;
 }
@@ -154,6 +155,10 @@
 	background: #6D34AC;
 }
 
+.halfdayspicker .days dd.absence_pending {
+	background: #6A5AA0;
+}
+
 /* non open days colors */
 .halfdayspicker .days dd.included.weekend, 
 .halfdayspicker .days dd.included.dayoff {
@@ -171,7 +176,13 @@
 .halfdayspicker .days dd.selected.absence {
   background-color: #900;
 }
-
+.halfdayspicker .days dd.included.absence_pending {
+  background-color: #c60
+}
+.halfdayspicker .days dd.selected.absence_pending {
+  background-color: #930
+}
+    
 @-webkit-keyframes show {
 	0% {
 		display: block;
