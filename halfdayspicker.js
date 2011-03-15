@@ -267,6 +267,9 @@ var HalfDaysPicker = function(settings) {
               }
             }
           }
+          else {
+            setDates(self.start.view, self.stop.view, true); // mouse go out but drag is finished
+          }
           mousePressed = false;
           selectDragging = false;
         });
