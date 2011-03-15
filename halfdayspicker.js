@@ -316,10 +316,14 @@ var HalfDaysPicker = function(settings) {
         });
     }
     
+    self.refresh = function() {
+      self.generateWidget(guessBestStartMonth());
+      onPeriodChange();
+    }
+    
     /// Init
     
-    self.generateWidget(guessBestStartMonth());
+    self.refresh();
     self.bindAll();
-    onPeriodChange();
 }
 
